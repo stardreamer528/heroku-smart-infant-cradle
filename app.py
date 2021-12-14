@@ -52,7 +52,7 @@ def predict():
             elif prediction[0][2] == maxP:
                 result = "sleeping"
 
-            return jsonify({'prediction': result})
+            return jsonify(prediction=result)
 
         except:
             return jsonify({'trace': traceback.format_exc()})
