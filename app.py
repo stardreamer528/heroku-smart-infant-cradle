@@ -8,6 +8,7 @@ import tensorflow
 from PIL import Image
 import requests
 from io import BytesIO
+import urllib.parse
 
 
 print(flask.__version__)
@@ -17,7 +18,7 @@ print(keras.__version__)
 
 # Your API definition
 app = Flask(__name__)
-model = keras.models.load_model("best_model.hdf5")
+model = keras.models.load_model('best_model.hdf5')
 print('Model loaded')
 
 
@@ -25,9 +26,21 @@ print('Model loaded')
 def predict():
     if model:
         try:
-            url = request.args['url']  # user provides url in query string
+            url1 = request.args['url']
+            url1 = url1[84:]
+            url1 = url1[:22]
+            print(url1)
+            encoded_url1 = urllib.parse.quote(url1, safe="")
+            print("URL part 1 is : " + encoded_url1)
+            url2 = request.args['token']
+            encoded_url2 = urllib.parse.quote(url2, safe="")
+            print("URL part 2 is : " + encoded_url2)
+            url = encoded_url1 + "?alt=media&token=" + encoded_url2
+            url = "https://firebasestorage.googleapis.com/v0/b/smartinfantcradle-api.appspot.com/o/home" + url
+            print("Final URL is: " + url)
             response = requests.get(url)
             img = Image.open(BytesIO(response.content))
+
             img = img.resize((200, 200))
             img = np.expand_dims(img, axis=0)
             prediction = model.predict(img)
