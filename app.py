@@ -18,7 +18,7 @@ print(keras.__version__)
 
 # Your API definition
 app = Flask(__name__)
-model = keras.models.load_model('best_model.hdf5')
+model = keras.models.load_model("best_model.hdf5")
 print('Model loaded')
 
 
@@ -28,7 +28,7 @@ def predict():
         try:
             url1 = request.args['url']
             url1 = url1[84:]
-            url1 = url1[:22]
+            url1 = url1[:33]
             print(url1)
             encoded_url1 = urllib.parse.quote(url1, safe="")
             print("URL part 1 is : " + encoded_url1)
