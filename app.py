@@ -22,7 +22,7 @@ model = keras.models.load_model("best_model.hdf5")
 print('Model loaded')
 
 
-@app.route('/', method='GET')
+@app.route('/')
 def predict():
     if model:
         try:
