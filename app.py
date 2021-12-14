@@ -17,7 +17,7 @@ print(keras.__version__)
 
 # Your API definition
 app = Flask(__name__)
-model = keras.models.load_model("SmartInfantCradle/model/best_model.hdf5")
+model = keras.models.load_model("best_model.hdf5")
 print('Model loaded')
 
 
