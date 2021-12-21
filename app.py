@@ -10,15 +10,15 @@ import requests
 from io import BytesIO
 import urllib.parse
 
-
-print(flask.__version__)
-print(np.__version__)
 print(tensorflow.__version__)
-print(keras.__version__)
+# print(flask.__version__)
+# print(np.__version__)
+# print(tensorflow.__version__)pip install --upgrade tensorflow
+# print(keras.__version__)
 
 # Your API definition
 app = Flask(__name__)
-model = keras.models.load_model("best_model.hdf5")
+model = keras.models.load_model("updated_model.hdf5")
 print('Model loaded')
 
 
