@@ -18,7 +18,7 @@ print(tensorflow.__version__)
 
 # Your API definition
 app = Flask(__name__)
-model = keras.models.load_model("updated_model.hdf5")
+model = keras.models.load_model(r"F:\Heroku-deployed-model\updated_model.hdf5")
 print('Model loaded')
 
 
@@ -27,20 +27,25 @@ def predict():
     if model:
         try:
             url1 = request.args['url']
-            url1 = url1[84:]
-            url1 = url1[:33]
-            print(url1)
-            encoded_url1 = urllib.parse.quote(url1, safe="")
-            print("URL part 1 is : " + encoded_url1)
-            url2 = request.args['token']
-            encoded_url2 = urllib.parse.quote(url2, safe="")
-            print("URL part 2 is : " + encoded_url2)
-            url = encoded_url1 + "?alt=media&token=" + encoded_url2
-            url = "https://firebasestorage.googleapis.com/v0/b/smartinfantcradle-api.appspot.com/o/home" + url
-            print("Final URL is: " + url)
-            response = requests.get(url)
+            # url1 = url1[84:]
+            # url1 = url1[:33]
+            # print(url1)
+            # encoded_url1 = urllib.parse.quote(url1, safe="")
+            # print("URL part 1 is : " + encoded_url1)
+            # url2 = request.args['token']
+            # encoded_url2 = urllib.parse.quote(url2, safe="")
+            # print("URL part 2 is : " + encoded_url2)
+            # url = encoded_url1 + "?alt=media&token=" + encoded_url2
+            # url = "https://firebasestorage.googleapis.com/v0/b/smartinfantcradle-api.appspot.com/o/home" + url
+            # print("Final URL is: " + url)
+            #url = "https://i.pinimg.com/550x/4b/e1/ba/4be1baf30d5f4c9132025ff7697dbc5b.jpg"
+            response = requests.get(url1)
+            # byteImgIO = BytesIO()
             img = Image.open(BytesIO(response.content))
-
+            # byteImg.save(byteImgIO, "PNG")
+            # byteImgIO.seek(0)
+            # img = byteImgIO.read()
+            print("image printed")
             img = img.resize((200, 200))
             img = np.expand_dims(img, axis=0)
             prediction = model.predict(img)
@@ -51,7 +56,7 @@ def predict():
                 result = "happy"
             elif prediction[0][2] == maxP:
                 result = "sleeping"
-
+            print(result)
             return jsonify(prediction=result)
 
         except:
