@@ -20,7 +20,7 @@ print(tensorflow.__version__)
 
 # Your API definition
 app = Flask(__name__)
-model = keras.models.load_model(r"F:\Heroku-deployed-model\updated_model.hdf5")
+model = keras.models.load_model(r"updated_model.hdf5")
 print('Model loaded')
 
 
