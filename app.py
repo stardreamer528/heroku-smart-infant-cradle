@@ -6,9 +6,11 @@ import numpy as np
 from tensorflow import keras
 import tensorflow
 from PIL import Image
+import shutil
 import requests
 from io import BytesIO
 import urllib.parse
+import io
 
 print(tensorflow.__version__)
 # print(flask.__version__)
@@ -27,24 +29,31 @@ def predict():
     if model:
         try:
             url1 = request.args['url']
-            # url1 = url1[84:]
-            # url1 = url1[:33]
+            url1 = url1[84:]
+            url1 = url1[:33]
+            url1 = url1[:-10]
             # print(url1)
-            # encoded_url1 = urllib.parse.quote(url1, safe="")
-            # print("URL part 1 is : " + encoded_url1)
-            # url2 = request.args['token']
-            # encoded_url2 = urllib.parse.quote(url2, safe="")
-            # print("URL part 2 is : " + encoded_url2)
-            # url = encoded_url1 + "?alt=media&token=" + encoded_url2
-            # url = "https://firebasestorage.googleapis.com/v0/b/smartinfantcradle-api.appspot.com/o/home" + url
-            # print("Final URL is: " + url)
+            #print("hi there bro whatsup")
+            encoded_url1 = urllib.parse.quote(url1, safe="")
+            #print("URL part 1 is : " + encoded_url1)
+            url2 = request.args['token']
+            encoded_url2 = urllib.parse.quote(url2, safe="")
+            #print("URL part 2 is : " + encoded_url2)
+            url = encoded_url1 + "?alt=media&token=" + encoded_url2
+            url = "https://firebasestorage.googleapis.com/v0/b/smartinfantcradle-api.appspot.com/o/rpi%2F" + url
+            #print("Final URL is: " + url)
             #url = "https://i.pinimg.com/550x/4b/e1/ba/4be1baf30d5f4c9132025ff7697dbc5b.jpg"
-            response = requests.get(url1)
-            # byteImgIO = BytesIO()
-            img = Image.open(BytesIO(response.content))
-            # byteImg.save(byteImgIO, "PNG")
-            # byteImgIO.seek(0)
-            # img = byteImgIO.read()
+            #response = requests.get(url)
+            res = requests.get(url, stream=True)
+
+            if res.status_code == 200:
+                with open('temp.jpg', 'wb') as f:
+                    shutil.copyfileobj(res.raw, f)
+                print('Image sucessfully Downloaded: ', 'temp.jpg')
+            else:
+                print('Image Couldn\'t be retrieved')
+
+            img = Image.open("temp.jpg")
             print("image printed")
             img = img.resize((200, 200))
             img = np.expand_dims(img, axis=0)
